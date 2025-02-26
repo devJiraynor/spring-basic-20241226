@@ -1,8 +1,10 @@
 package com.korit.basic.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 // Lombok 라이브러리
 // - getter, setter, constructor 등 자주 사용되지만 반복적으로 작성해야하는 코드를 자동으로 생성해주는 라이브러리
@@ -18,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 // @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Getter
+@Setter
 public class Lombok {
   private final String field1;
   private final int field2;
