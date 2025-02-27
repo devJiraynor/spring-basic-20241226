@@ -1,0 +1,52 @@
+package com.korit.basic.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.korit.basic.service.BasicService;
+
+@RestController
+@RequestMapping("/service")
+public class ServiceController {
+
+  // 의존성 주입 (DI):
+  // - 해당 모듈에 필요한 의존성을 클래스의 인스턴스를 생성하는 위치에서 주입
+  // - Spring framework에서 @Autowired을 이용하여 의존성 주입을 Spring에게 위임할 수 있음 (IoC, DI)
+  // - 필드를 이용한 의존성 주입, setter 메서드를 이용한 의존성 주입, 생성자를 이용한 의존성 주입
+  // - 생성자를 이용한 의존성 주입 방법이 가장 안정적이므로 Spring Framework에서는 생성자를 이용한 의존성 주입을 권장
+  // - 주의!: IoC를 통해 Spring에게 의존성 주입을 위임하려면 주입하려는 클래스가 Spring Bean으로 등록(@Component)되어있어야 함
+
+  // @Autowired: 의존성 주입을 Spring에 위임
+  // - 주입할 의존성이 반드시 Spring Bean으로 등록되어 있어야함
+
+  // 1. 필드를 이용한 의존성 주입 방법
+  // @Autowired
+  // private BasicService basicService;
+
+  // 2. setter 메서드를 이용한 의존성 주입 방법
+  // private BasicService basicService;
+
+  // @Autowired
+  // public void setBasicService(BasicService basicService) {
+  //   this.basicService = basicService;
+  // }
+
+  // 3. 생성자를 이용한 의존성 주입 방법
+  // *권장사항*
+  private BasicService basicService;
+
+  // 생성자를 이용한 의존성 주입 방법을 사용할 땐 @Autowired를 생략해도 됨
+  // @Autowired
+  public ServiceController(BasicService basicService) {
+    this.basicService = basicService;
+  }
+  
+  @GetMapping("")
+  public ResponseEntity<String> getService() {
+    return basicService.getService();
+  }
+
+}
