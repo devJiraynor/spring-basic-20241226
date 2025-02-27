@@ -17,6 +17,7 @@ import lombok.Setter;
 // @NoArgsConstructor: 기본 생성자 생성 (빈 생성자)
 // @AllArgsConstructor: 모든 멤버 변수를 매개변수로 받는 생성자 생성
 // @RequiredArgsConstructor: 필수 멤버 변수를 매개변수로 받는 생성자 생성
+
 // @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor

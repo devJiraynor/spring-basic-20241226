@@ -61,7 +61,7 @@ public class RequestDataController {
   // @RequestBody() : POST, PUT, PATCH에서 Request Body로 전송한 데이터를 메서드에서 매개변수로 받기 위한 방법
   @PostMapping("/request-body")
   public String requestBody(
-    @RequestBody() RequestBodyDto requestBody
+    @RequestBody RequestBodyDto requestBody
   ) {
     return "이름 : " + requestBody.getName() + " 나이 : " + requestBody.getAge();
   }
