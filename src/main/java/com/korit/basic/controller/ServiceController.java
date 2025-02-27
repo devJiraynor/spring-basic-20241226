@@ -8,8 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.basic.service.BasicService;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/service")
+// 생성자를 이용한 의존성 주입 방법은 @Autowired를 생략할 수 있기 때문에 Lombok으로 생성자를 자동 생성하여 응용할 수 있음
+// @AllArgsConstructor
+// 만약, 의존성을 선택적으로 주입하겠다 한다면 의존성을 final로 지정하여 @RequiredArgsConstructor를 이용할 수 있음
+@RequiredArgsConstructor
 public class ServiceController {
 
   // 의존성 주입 (DI):
@@ -36,13 +43,13 @@ public class ServiceController {
 
   // 3. 생성자를 이용한 의존성 주입 방법
   // *권장사항*
-  private BasicService basicService;
+  private final BasicService basicService;
 
   // 생성자를 이용한 의존성 주입 방법을 사용할 땐 @Autowired를 생략해도 됨
   // @Autowired
-  public ServiceController(BasicService basicService) {
-    this.basicService = basicService;
-  }
+  // public ServiceController(BasicService basicService) {
+  //   this.basicService = basicService;
+  // }
   
   @GetMapping("")
   public ResponseEntity<String> getService() {
