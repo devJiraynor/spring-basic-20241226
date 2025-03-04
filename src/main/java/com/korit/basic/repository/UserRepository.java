@@ -8,5 +8,9 @@ import com.korit.basic.entity.UserEntity;
 // User 테이블에 접근할 리포지토리
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
+  // SELECT * FROM user WHERE user_id = ?;
+  UserEntity findByUserId(String userId);
 
+  // SELECT * FROM user WHERE user_tel_number = ?;
+  UserEntity findByUserTelNumber(String userTelNumber);
 }
