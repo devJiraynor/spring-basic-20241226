@@ -1,5 +1,7 @@
 package com.korit.basic.entity;
 
+import com.korit.basic.dto.PostUserRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -25,4 +27,12 @@ public class UserEntity {
   private String userName;
   private String userAddress;
   private String userTelNumber;
+
+  public UserEntity(PostUserRequestDto dto) {
+    this.userId = dto.getUserId();
+    this.userPassword = dto.getUserPassword();
+    this.userName = dto.getUserName();
+    this.userAddress = dto.getUserAddress();
+    this.userTelNumber = dto.getUserTelNumber();
+  }
 }

@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
   // SELECT * FROM user WHERE user_tel_number = ?;
   UserEntity findByUserTelNumber(String userTelNumber);
+
+  boolean existsByUserId(String userId);
+  boolean existsByUserTelNumber(String userTelNumber);
 }
