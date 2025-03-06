@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.korit.basic.dto.GetUserListResponseDto;
 import com.korit.basic.dto.GetUserResponseDto;
 import com.korit.basic.dto.PostUserRequestDto;
 import com.korit.basic.dto.ResponseDto;
@@ -90,6 +91,11 @@ public class UserServiceImplement implements UserService {
 
     return ResponseDto.success(HttpStatus.CREATED);
 
+  }
+
+  @Override
+  public ResponseEntity<? super GetUserListResponseDto> getUserList() {
+    
   }
 
   @Override
