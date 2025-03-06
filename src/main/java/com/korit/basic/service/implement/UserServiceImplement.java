@@ -134,10 +134,8 @@ public class UserServiceImplement implements UserService {
       UserEntity userEntity = userRepository.findByUserId(userId);
       if (userEntity == null) return ResponseDto.noExistUser();
 
-      userEntity.setUserName(dto.getUserName());
-      userEntity.setUserAddress(dto.getUserAddress());
+      userEntity.patch(dto);
       userRepository.save(userEntity);
-
     } catch(Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
