@@ -3,12 +3,21 @@ package com.korit.basic.config;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import com.korit.basic.filter.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 // Spring Web 보안 설정
 // @Configurable:
@@ -20,14 +29,17 @@ import org.springframework.security.web.SecurityFilterChain;
 // @EnableWebSecurity:
 // - Spring Web Security와 관련된 설정을 지원하는 어노테이션
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
   
   // Web Security 설정을 지정하는 메서드
   // @Bean:
   // @Component를 사용하지 못하거나 사용하고 싶지 않을때 Spring bean 으로 등록할 수 있도록 하는 어노테이션
   // WebSecurityConfig 클래스의 인스턴스 생성을 Spring에게 넘기지 않고 configure 메서드 호출만 Spring에게 넘기는 것 
   @Bean
-  public SecurityFilterChain configure(HttpSecurity security) throws Exception {
+  protected SecurityFilterChain configure(HttpSecurity security) throws Exception {
 
     // Class::method
     // - 메서드 참조, 특정 클래스의 메서드를 참조할 때 사용
@@ -53,6 +65,50 @@ public class WebSecurityConfig {
       // CSRF 취약점에 대한 대비 설정
       // CSRF 취약점에 대한 대비를 하지 않겠다고 지정
       .csrf(CsrfConfigurer::disable)
+
+      // CORS 정책 설정
+      .cors(cors -> cors.configurationSource(configurationSource()))
+
+      // 인가 작업
+      // - 요청 URL의 패턴(자원)에 따라 인가가 필요한 작업인지 지정하는 설정 (자원에 대한 권한 지정)
+      // - 모든 클라이언트가 접근할 수 있도록 허용
+      // - 인증된 모든 클라이언트가 접근할 수 있도록 허용
+      // - 인증된 클라이언트 중 특정 권한을 가진 클라이언트만 접근할 수 있도록 허용
+      .authorizeHttpRequests(requset -> requset
+        // requestMachers(): URL 패턴, HTTP 메서드, URL 패턴 + HTTP 메서드 마다 접근 권한을 부여하는 메서드
+        // permitAll(): 모든 클라이언트가 접근할 수 있도록 지정
+        // authenticated(): 인증된 모든 클라이언트가 접근할 수 있도록 지정
+        // hasRole(권한): 특정 권한을 가진 클라이언트만 접근할 수 있도록 지정 (매개변수로 전달하는 권한명은 ROLE_를 제거한 실제 권한명)
+        .requestMatchers("/basic", "/basic/**", "/security", "/security/**").permitAll()
+        .requestMatchers(HttpMethod.PATCH).authenticated()
+        .requestMatchers(HttpMethod.POST, "/user", "/user/**").hasRole("USER")
+        // anyRequest(): 나머지 모든 요청에 대한 처리
+        .anyRequest().authenticated()
+      )
+      // 필터 등록
+      // addFilterBefore(추가할필터인스턴스, 특정필터클래스객체): 특정 필터 이전에 지정한 필드를 추가
+      .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+    // 설정 완료
+    return security.build();
+
+  }
+
+  @Bean
+  protected CorsConfigurationSource configurationSource() {
+
+    CorsConfiguration configuration = new CorsConfiguration();
+    // 출처 지정
+    configuration.addAllowedOrigin("*");
+    // HTTP 메서드 지정
+    configuration.addAllowedMethod("*");
+    // HTTP Request Header 지정
+    configuration.addAllowedHeader("*");
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+
+    return source;
 
   }
 
