@@ -81,7 +81,7 @@ public class WebSecurityConfig {
       // - 모든 클라이언트가 접근할 수 있도록 허용
       // - 인증된 모든 클라이언트가 접근할 수 있도록 허용
       // - 인증된 클라이언트 중 특정 권한을 가진 클라이언트만 접근할 수 있도록 허용
-      .authorizeHttpRequests(requset -> requset
+      .authorizeHttpRequests(request -> request
         // requestMachers(): URL 패턴, HTTP 메서드, URL 패턴 + HTTP 메서드 마다 접근 권한을 부여하는 메서드
         // permitAll(): 모든 클라이언트가 접근할 수 있도록 지정
         // authenticated(): 인증된 모든 클라이언트가 접근할 수 있도록 지정
